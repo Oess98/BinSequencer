@@ -16,17 +16,13 @@ void setup()
 
 }
 
-void decToBinaryPins(uint8_t dec, uint8_t delayInterval)
+void decToBinaryPins(uint8_t dec, uint8_t delayInterval=0)
 {
   for(uint8_t bitNumber = 0; bitNumber<sizeof(binaryPins); bitNumber++)
   {
     digitalWrite(binaryPins[bitNumber], bitRead(dec, bitNumber));
     delay(delayInterval*1000);
   }
-}
-void charToBinaryPins(char character, uint8_t delayInterval)
-{
-  decToBinaryPins(uint8_t(character), delayInterval);
 }
 
 void loop() 

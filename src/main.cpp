@@ -1,36 +1,46 @@
 #include <Arduino.h>
 
-uint8_t binaryPins []= {2,3,4,5};
+const uint8_t A []= {2,3,4,5};
+const uint8_t B []= {6,7,8};
 
+const uint8_t arrPointer[]={*A, *B};
+
+void unsignedByteToBinaryPins(uint8_t dec, uint8_t *pins, size_t size)
+{
+  for (uint8_t bitNumber = 0; bitNumber<size; bitNumber++)
+  {
+    digitalWrite(pins[bitNumber], bitRead(dec, bitNumber));
+  }
+}
+void signedByteToBinaryPins(int8_t dec, uint8_t *pins, size_t size)
+{
+  for (uint8_t bitNumber = 0; bitNumber<size; bitNumber++)
+  {
+    digitalWrite(pins[bitNumber], bitRead(dec, bitNumber));
+  }
+}
 
 void setup() 
 {
   Serial.begin(115200);
-  for(uint8_t i = 0; i<sizeof(binaryPins); i++)
+  for(uint8_t pin: A)
   {
-    pinMode(binaryPins[i], OUTPUT);
-    digitalWrite(binaryPins[i], HIGH);
-    delay(200);
-    digitalWrite(binaryPins[i], LOW);
+    pinMode(pin, OUTPUT);
   }
-
-}
-
-void decToBinaryPins(uint8_t dec, uint8_t delayInterval=0)
-{
-  for(uint8_t bitNumber = 0; bitNumber<sizeof(binaryPins); bitNumber++)
+  for(uint8_t pin: B)
   {
-    digitalWrite(binaryPins[bitNumber], bitRead(dec, bitNumber));
-    delay(delayInterval*1000);
+    pinMode(pin, OUTPUT);
   }
 }
 
 void loop() 
 {
-  decToBinaryPins(0b0011);//Example three decimal
-  for (int i= 0; i<5; i++)
+  signedByteToBinaryPins(0b1111, A, sizeof(A));//Example -1 decimal
+  
+  //Counting 0-7
+  for (uint8_t i= 0; i<8; i++)
   {
-    decToBinaryPins(i);
+    unsignedByteToBinaryPins(i, B, sizeof(B));
     delay(1000);
   }   
 }
